@@ -9,13 +9,18 @@ public class Main : MonoBehaviour
    //用来现实安卓发过来的内容
     public Text text;
     public Button btn;
+  #if UNITY_ANDROID
     private AndroidJavaObject javaObj;
+  #endif
     void Start()
     {
+#if UNITY_ANDROID
         //通过该API来实例化导入的arr中对应的类
         javaObj = new AndroidJavaObject("com.pub.myunitylib.Unity2Android");
+#endif
         btn.onClick.AddListener(() =>
         {
+#if UNITY_ANDROID
             //通过API来调用原生代码的方法
             bool success = javaObj.Call<bool>("ShowToast","this is unity");
             if(success)
@@ -28,11 +33,17 @@ public class Main : MonoBehaviour
                 Debug.Log("call android failed");
             }
             
-        }); 
+#elif UNITY_IOS
+           CallIOSBridge.CallIOSNativeFunction();
+#endif
+
+        });   
+
     }
 
     private void FixedUpdate()
     {
+#if UNITY_ANDROID
         if (javaObj != null)
         {
             int status = javaObj.Call<int>("CheckNetReachability");
@@ -55,6 +66,7 @@ public class Main : MonoBehaviour
                     break;
             }
         }
+#endif
     }
 
     // Update is called once per frame
