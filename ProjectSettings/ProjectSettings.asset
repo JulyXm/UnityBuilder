@@ -155,6 +155,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.xgame.xtest
     Standalone: cn.test.test
+    iOS: com.xgame.vzxmTest
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
