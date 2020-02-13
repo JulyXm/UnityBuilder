@@ -56,6 +56,7 @@
 #endif
 
 #include <AssertMacros.h>
+#include <sys/socket.h>
 
 #pragma mark * PingFoundation
 
