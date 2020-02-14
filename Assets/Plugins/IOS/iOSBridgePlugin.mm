@@ -52,10 +52,13 @@ static IOSBridge* _sharedInstance = nil;
         case RealStatusViaWiFi:
             NSLog(@"RealStatusViaWifi");
             ret = 1;
+            break;
         case RealStatusViaWWAN:
             NSLog(@"RealStatusViaWWAN");
+            break;
         case RealStatusUnknown:
             NSLog(@"RealStatusUnKnown");
+            break;
         default:
             NSLog(@"Unkown Error!!!!!!");
             break;
@@ -85,7 +88,7 @@ static IOSBridge* _sharedInstance = nil;
     }
     
     NSString* retStr = [NSString stringWithFormat:@"%d",ret ];
-    //回掉unity
+    //回调unity
     UnitySendMessage("NetReachAbility", "OnNetStatus",[retStr UTF8String]);
     return ret;
 
