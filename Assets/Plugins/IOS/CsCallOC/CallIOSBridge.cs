@@ -9,6 +9,6 @@ using UnityEngine;
 public class CallIOSBridge
 {
     //定义要导出的方法
-    [DllImport("__Internal")]
-    public static extern  void CallIOSNativeFunction();
+    //[DllImport("__Internal")]
+    //public static extern  void CallIOSNativeFunction();
 }

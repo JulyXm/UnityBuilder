@@ -45,7 +45,7 @@ public class NetReachAbility : MonoBehaviour
         {
         #if UNITY_IOS
             return realNetState;
-            #elseif 
+        #elif UNITY_ANDROID
             realNetState  = (RealNetState)javaObj.Call<int>("CheckNetReachability");
             return realNetState;
             #else
