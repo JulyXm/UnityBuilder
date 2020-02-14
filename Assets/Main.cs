@@ -9,72 +9,74 @@ public class Main : MonoBehaviour
    //用来现实安卓发过来的内容
     public Text text;
     public Button btn;
-  #if UNITY_ANDROID
-    private AndroidJavaObject javaObj;
-  #endif
+
+    private NetReachAbility netReachAbility;
+    private void Awake()
+    {
+        netReachAbility = gameObject.AddComponent<NetReachAbility>();
+        var status = netReachAbility.NetState;
+        ShowState(status);
+    }
+
     void Start()
     {
-#if UNITY_ANDROID
-        //通过该API来实例化导入的arr中对应的类
-        javaObj = new AndroidJavaObject("com.pub.myunitylib.Unity2Android");
-#endif
-        btn.onClick.AddListener(() =>
-        {
-#if UNITY_ANDROID
-            //通过API来调用原生代码的方法
-            bool success = javaObj.Call<bool>("ShowToast","this is unity");
-            if(success)
-            {
-                //请求成功
-                Debug.Log("call android suc");
-            }
-            else
-            {
-                Debug.Log("call android failed");
-            }
-            
-#elif UNITY_IOS
-           CallIOSBridge.CallIOSNativeFunction();
-#endif
-
-        });   
+//#if UNITY_ANDROID
+//        //通过该API来实例化导入的arr中对应的类
+//        var javaObj = new AndroidJavaObject("com.pub.myunitylib.Unity2Android");
+//#endif
+//        btn.onClick.AddListener(() =>
+//        {
+//#if UNITY_ANDROID
+//            //通过API来调用原生代码的方法
+//            bool success = javaObj.Call<bool>("ShowToast","this is unity");
+//            if(success)
+//            {
+//                //请求成功
+//                Debug.Log("call android suc");
+//            }
+//            else
+//            {
+//                Debug.Log("call android failed");
+//            }
+//            
+//#elif UNITY_IOS
+//           CallIOSBridge.CallIOSNativeFunction();
+//#endif
+//        });   
 
     }
 
+    private void ShowState(RealNetState state)
+    {
+        switch (state)
+        {
+            case RealNetState.NETWORK_NOT_REACH:
+                text.text = "网络不可用";
+                break;
+            case RealNetState.NETWORK_WIFI:
+                text.text = "WIFI";
+                break;
+            case RealNetState.NETWORK_CLASS_2_G:
+                text.text = "2G";
+                break;
+            case RealNetState.NETWORK_CLASS_3_G:
+                text.text = "3G";
+                break;
+            case RealNetState.NETWORK_CLASS_4_G:
+                text.text = "4G";
+                break;
+            case RealNetState.NETWORK_CLASS_UNKNOWN:
+                text.text = "UnKown Network";
+                break;
+        }
+    }
     private void FixedUpdate()
     {
-#if UNITY_ANDROID
-        if (javaObj != null)
-        {
-            int status = javaObj.Call<int>("CheckNetReachability");
-            switch (status)
-            {
-                case -1:
-                    text.text = "网络不可用";
-                    break;
-                case 1:
-                    text.text = "WIFI";
-                    break;
-                case 2:
-                    text.text = "2G";
-                    break;
-                case 3:
-                    text.text = "3G";
-                    break;
-                case 4:
-                    text.text = "4G";
-                    break;
-            }
-        }
-#endif
+        var status = netReachAbility.NetState;
+        ShowState(status);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     /// <summary>
     /// 原生层通过该方法传回信息
     /// </summary>

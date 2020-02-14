@@ -1,3 +1,5 @@
+#import "RealReachability.h"
+
 //!---------------------------外部接口声明--------------------------------------------
 #if defined(__cplusplus)
 extern "C"{
@@ -8,14 +10,15 @@ extern "C"{
 #endif
 
 extern "C" {
-     void InitNetReachAbility();
+     int InitNetReachAbility();
      void UnInitNetReachAbility();
  }
 
 @interface IOSBridge : NSObject
 +(IOSBridge*) GetInst;
--(void) InitReachAbility;
+-(int) InitReachAbility;
 -(void) UnInitReachAbility;
--(void) networkChanged:(NSNotification*) notification;
+-(int) networkChanged:(NSNotification*) notification;
+-(int) handleNetworkChanged:(ReachabilityStatus) status;
 @end
 

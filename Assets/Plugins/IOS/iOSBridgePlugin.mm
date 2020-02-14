@@ -1,9 +1,9 @@
  #import "iOSBridgePlugin.h"
- #import "RealReachability.h"
-
- void InitNetReachAbility(){
-     NSLog(@"[iOS Native] I AM IOS Function!");
-     [[IOSBridge GetInst] InitReachAbility] ;
+ 
+ int InitNetReachAbility(){
+     //NSLog(@"[iOS Native] I AM IOS Function!");
+    int ret =  [[IOSBridge GetInst] InitReachAbility] ;
+    return ret;
  }
 
 void UnInitNetReachAbility(){
@@ -24,22 +24,23 @@ static IOSBridge* _sharedInstance = nil;
     }
 }
 
-- (void) InitReachAbility
+- (int) InitReachAbility
 {
     GLobalRealReachability.hostForPing = @"www.baidu.com";
     GLobalRealReachability.hostForCheck = @"www.apple.com";
     [GLobalRealReachability startNotifier];
     [[NSNotificationCenter defaultCenter] addObserver:(self) selector: @selector(networkChanged:) name:kRealReachabilityChangedNotification object:(nil)];
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+        NSLog(@"Initial reachability status:%@",@(status));
+    return [self handleNetworkChanged:status];
 }
 - (void) UnInitReachAbility
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(void) networkChanged:(NSNotification*) notification
+-(int) handleNetworkChanged:(ReachabilityStatus) status
 {
-    RealReachability *reachablility = (RealReachability*) notification.object;
-    ReachabilityStatus status = [reachablility currentReachabilityStatus];
     NSLog(@"cur Status:%@",@(status));
     int ret = 0;
     //获取当前网络状态
@@ -86,8 +87,15 @@ static IOSBridge* _sharedInstance = nil;
     NSString* retStr = [NSString stringWithFormat:@"%d",ret ];
     //回掉unity
     UnitySendMessage("NetReachAbility", "OnNetStatus",[retStr UTF8String]);
+    return ret;
 
-    
+}
+-(void) networkChanged:(NSNotification*) notification
+{
+    RealReachability *reachablility = (RealReachability*) notification.object;
+    ReachabilityStatus status = [reachablility currentReachabilityStatus];
+    [self handleNetworkChanged:status];
+     
 }
 
 
