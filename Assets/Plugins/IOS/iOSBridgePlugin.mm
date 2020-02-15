@@ -1,19 +1,23 @@
  #import "iOSBridgePlugin.h"
  
+//提供给Unity C#代码调用的接口实现
+//初始化ReachAbility
  int InitNetReachAbility(){
      //NSLog(@"[iOS Native] I AM IOS Function!");
     int ret =  [[IOSBridge GetInst] InitReachAbility] ;
     return ret;
  }
-
+// 销毁ReachAbility
 void UnInitNetReachAbility(){
     [[IOSBridge GetInst] UnInitReachAbility];
 }
 
+//IOSBridge类的实现
+
 @implementation IOSBridge
-
+//单例模式中的唯一实例
 static IOSBridge* _sharedInstance = nil;
-
+//单例模式获取实例接口
 + (IOSBridge*)  GetInst{
     @synchronized (self.class) {
         if(_sharedInstance == nil){
@@ -24,21 +28,29 @@ static IOSBridge* _sharedInstance = nil;
     }
 }
 
+//初始化并返回当前的网络状态 -1：未联网 0：未知网络 1: WIFI 2:2G网络 3:3G网络 4:4G网络	
 - (int) InitReachAbility
 {
+	//设置用于ping的远端地址 这里使用baidu和apple的地址
     GLobalRealReachability.hostForPing = @"www.baidu.com";
     GLobalRealReachability.hostForCheck = @"www.apple.com";
+	//调用接口开启网络监听
     [GLobalRealReachability startNotifier];
+	//注册一个观察者，用于放回当前的网络状态ReachabilityStatus的改变
+	//监听函数设置为本类的networkChanged方法
     [[NSNotificationCenter defaultCenter] addObserver:(self) selector: @selector(networkChanged:) name:kRealReachabilityChangedNotification object:(nil)];
     ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
         NSLog(@"Initial reachability status:%@",@(status));
+	//返回当前的网络状态	
     return [self handleNetworkChanged:status];
 }
+//销毁 移除监听
 - (void) UnInitReachAbility
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+//处理网络状态，并回调到Unity中
 -(int) handleNetworkChanged:(ReachabilityStatus) status
 {
     NSLog(@"cur Status:%@",@(status));
@@ -93,6 +105,8 @@ static IOSBridge* _sharedInstance = nil;
     return ret;
 
 }
+
+//监听函数
 -(void) networkChanged:(NSNotification*) notification
 {
     RealReachability *reachablility = (RealReachability*) notification.object;
