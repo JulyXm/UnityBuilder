@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Framework;
 
 public class Main : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class Main : MonoBehaviour
         netReachAbility = gameObject.AddComponent<NetReachAbility>();
         var status = netReachAbility.NetState;
         ShowState(status);
+        
+        XLogger.Info("Game Start`````````````````");
+        
     }
 //    public void OnGUI()
 //    {
@@ -33,6 +37,7 @@ public class Main : MonoBehaviour
         {
             //测试LitJson
             var res = Test.TestJson.Test();
+            Framework.XLogger.Info(res);
             text.text = res;
         });
 
@@ -91,6 +96,11 @@ public class Main : MonoBehaviour
     {
         var status = netReachAbility.NetState;
       //  ShowState(status);
+    }
+
+    private void OnApplicationQuit()
+    {
+        XLogger.Info("Game Exit````````````````````");
     }
 
     // Update is called once per frame
