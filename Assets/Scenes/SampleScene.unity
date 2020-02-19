@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -293,6 +293,8 @@ GameObject:
   - component: {fileID: 534669904}
   - component: {fileID: 534669903}
   - component: {fileID: 534669906}
+  - component: {fileID: 534669907}
+  - component: {fileID: 534669908}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -376,8 +378,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dad3e55c254514218b37936306b48b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &534669907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edcb4e84b0a7a741af604049a5a23b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   text: {fileID: 1583605311}
   btn: {fileID: 1546191876}
+--- !u!114 &534669908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588fa2d98411c314190d28dffe59d465, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1474661350
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,8 +698,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 30.1, y: 35.7}
-  m_SizeDelta: {x: 220.2, y: 101.5}
+  m_AnchoredPosition: {x: -11.45, y: 108.3}
+  m_SizeDelta: {x: 783.35, y: 246.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1583605311
 MonoBehaviour:
@@ -708,7 +734,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 'test
+
+'
 --- !u!222 &1583605312
 CanvasRenderer:
   m_ObjectHideFlags: 0

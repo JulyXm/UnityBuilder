@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
+
    //用来现实安卓发过来的内容
     public Text text;
     public Button btn;
@@ -17,9 +18,25 @@ public class Main : MonoBehaviour
         var status = netReachAbility.NetState;
         ShowState(status);
     }
+//    public void OnGUI()
+//    {
+//        if (GUILayout.Button("SERIALIZE"))
+//        {
+//            string myJson = JsonWriter.Serialize(myPC);
+//            Debug.Log(myJson);
+//        }
+//    }
 
     void Start()
     {
+        btn.onClick.AddListener(() =>
+        {
+            //测试LitJson
+            var res = Test.TestJson.Test();
+            text.text = res;
+        });
+
+        
 //#if UNITY_ANDROID
 //        //通过该API来实例化导入的arr中对应的类
 //        var javaObj = new AndroidJavaObject("com.pub.myunitylib.Unity2Android");
@@ -73,7 +90,7 @@ public class Main : MonoBehaviour
     private void FixedUpdate()
     {
         var status = netReachAbility.NetState;
-        ShowState(status);
+      //  ShowState(status);
     }
 
     // Update is called once per frame
