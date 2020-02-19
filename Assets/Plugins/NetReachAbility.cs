@@ -23,13 +23,14 @@ public class NetReachAbility : MonoBehaviour
     private AndroidJavaObject javaObj;
 #endif
     
+#if UNITY_ANDROID || UNITY_IOS
     //初始化ReachAbility
     [DllImport("__Internal")]
     public static extern  int InitNetReachAbility();
     //销毁ReachAbility
     [DllImport("__Internal")]
     public static extern  void UnInitNetReachAbility();
-    
+#endif 
     
     public static NetReachAbility GetInstance
     {
