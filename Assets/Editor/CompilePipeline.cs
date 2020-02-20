@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
 
-[InitializeOnLoad]
+//[InitializeOnLoad]
 public static  class CompilePipeline
 {
     private static StringBuilder sb = new StringBuilder(512);

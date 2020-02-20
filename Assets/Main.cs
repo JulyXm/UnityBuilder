@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Framework;
+using Logic;
+using NetMsg.Common;
 
 public class Main : MonoBehaviour
 {
@@ -18,10 +20,22 @@ public class Main : MonoBehaviour
         netReachAbility = gameObject.AddComponent<NetReachAbility>();
         var status = netReachAbility.NetState;
         ShowState(status);
+        NetWorkService.Instance.Init();
         
         XLogger.Info("Game Start`````````````````");
-        
+        XLogger.Info("Game Start22`````````````````");
+        Application.quitting += AppQuit;
     }
+
+    static void AppQuit()
+    {
+        Debug.Log("AppQuit ending after " + Time.time + " seconds");
+        Framework.XLogger.Info("App is Quiting========");
+        NetWorkService.Instance.SendTcp(EMsgSC.C2L_LeaveRoom,new Msg_C2L_LeaveRoom());
+        NetWorkService.Instance.UnInit();
+    }
+    
+    
 //    public void OnGUI()
 //    {
 //        if (GUILayout.Button("SERIALIZE"))
@@ -33,12 +47,18 @@ public class Main : MonoBehaviour
 
     void Start()
     {
+        NetWorkService.Instance.ConnectSrv();
+        
         btn.onClick.AddListener(() =>
         {
             //测试LitJson
-            var res = Test.TestJson.Test();
-            Framework.XLogger.Info(res);
-            text.text = res;
+//            var res = Test.TestJson.Test();
+//            Framework.XLogger.Info(res);
+//            text.text = res;
+
+            //send msg
+            NetWorkService.Instance.SendTcp(EMsgSC.C2L_Test,new Msg_C2L_Test());
+            
         });
 
         
@@ -100,6 +120,7 @@ public class Main : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        Debug.Log("OnApplicationQuit ending after " + Time.time + " seconds");
         XLogger.Info("Game Exit````````````````````");
     }
 
