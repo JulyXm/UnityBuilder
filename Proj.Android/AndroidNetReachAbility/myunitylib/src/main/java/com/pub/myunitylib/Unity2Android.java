@@ -42,7 +42,7 @@ public class Unity2Android {
      * @param args              参数
      * @return                  调用是否成功
      */
-    boolean CallUnity(String gameObjectName, String functionName, String args){
+    public boolean CallUnity(String gameObjectName, String functionName, String args){
         try {
             Class<?> classtype = Class.forName("com.unity3d.player.UnityPlayer");
             Method method =classtype.getMethod("UnitySendMessage", String.class,String.class,String.class);
@@ -77,7 +77,7 @@ public class Unity2Android {
     public boolean ShowToast(String content){
         Toast.makeText(getActivity(),content,Toast.LENGTH_SHORT).show();
         //这里是主动调用Unity中的方法，该方法之后unity部分会讲到
-        CallUnity("Main Camera","FromAndroid", "hello unity i'm android");
+        CallUnity("MainCamera","FromAndroid", "hello unity i'm android");
         return true;
     }
 }

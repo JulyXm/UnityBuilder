@@ -17,9 +17,9 @@ public class Main : MonoBehaviour
     private NetReachAbility netReachAbility;
     private void Awake()
     {
-        netReachAbility = gameObject.AddComponent<NetReachAbility>();
-        var status = netReachAbility.NetState;
-        ShowState(status);
+        //netReachAbility = gameObject.AddComponent<NetReachAbility>();
+        //var status = netReachAbility.NetState;
+        //ShowState(status);
         NetWorkService.Instance.Init();
         
         XLogger.Info("Game Start`````````````````");
@@ -27,7 +27,15 @@ public class Main : MonoBehaviour
         Application.quitting += AppQuit;
     }
 
-    static void AppQuit()
+    void AppQuit()
+    {
+        Debug.Log("AppQuit ending after " + Time.time + " seconds");
+        Framework.XLogger.Info("App is Quiting========");
+        NetWorkService.Instance.SendTcp(EMsgSC.C2L_LeaveRoom,new Msg_C2L_LeaveRoom());
+        NetWorkService.Instance.UnInit();
+    }
+    
+    void AppQuit2(string args)
     {
         Debug.Log("AppQuit ending after " + Time.time + " seconds");
         Framework.XLogger.Info("App is Quiting========");
@@ -49,42 +57,49 @@ public class Main : MonoBehaviour
     {
         NetWorkService.Instance.ConnectSrv();
         
-        btn.onClick.AddListener(() =>
-        {
-            //测试LitJson
-//            var res = Test.TestJson.Test();
-//            Framework.XLogger.Info(res);
-//            text.text = res;
-
-            //send msg
-            NetWorkService.Instance.SendTcp(EMsgSC.C2L_Test,new Msg_C2L_Test());
-            
-        });
+//        btn.onclick.addlistener(() =>
+//        {
+//            //测试litjson
+////            var res = test.testjson.test();
+////            framework.xlogger.info(res);
+////            text.text = res;
+//
+//            //send msg
+//            networkservice.instance.sendtcp(emsgsc.c2l_test,new msg_c2l_test());
+//            
+//        });
 
         
-//#if UNITY_ANDROID
-//        //通过该API来实例化导入的arr中对应的类
-//        var javaObj = new AndroidJavaObject("com.pub.myunitylib.Unity2Android");
-//#endif
-//        btn.onClick.AddListener(() =>
-//        {
-//#if UNITY_ANDROID
-//            //通过API来调用原生代码的方法
-//            bool success = javaObj.Call<bool>("ShowToast","this is unity");
-//            if(success)
-//            {
-//                //请求成功
-//                Debug.Log("call android suc");
-//            }
-//            else
-//            {
-//                Debug.Log("call android failed");
-//            }
-//            
-//#elif UNITY_IOS
-//           CallIOSBridge.CallIOSNativeFunction();
-//#endif
-//        });   
+#if UNITY_ANDROID
+        //通过该API来实例化导入的arr中对应的类
+        var javaObj = new AndroidJavaObject("com.pub.myunitylib.Unity2Android");
+#endif
+        btn.onClick.AddListener(() =>
+        {
+#if UNITY_ANDROID
+            //通过API来调用原生代码的方法
+            bool success = javaObj.Call<bool>("ShowToast","this is unity");
+            if(success)
+            {
+                //请求成功
+                Debug.Log("call android suc");
+            }
+            else
+            {
+               Debug.Log("call android failed");
+            }
+           
+            NetWorkService.Instance.SendTcp(EMsgSC.C2L_Test,new Msg_C2L_Test());
+#elif UNITY_IOS
+           CallIOSBridge.CallIOSNativeFunction();
+#endif
+        });
+        
+#if UNITY_STANDALONE_WIN
+       // List<LoginInfo> caches = LitJson.JsonMapper.ToObject<List<LoginInfo>>(data);
+#else
+    List<LoginInfo> caches = JsonConvert.DeserializeObject<List<LoginInfo>>(data);
+#endif
 
     }
 
@@ -114,7 +129,7 @@ public class Main : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        var status = netReachAbility.NetState;
+      //  var status = netReachAbility.NetState;
       //  ShowState(status);
     }
 
